@@ -1,3 +1,12 @@
+{
+    An header for the MPFR library
+    Copyright (c) 2018 by Vadim Isaev
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+}
+
 {$mode objfpc}{$h+}
 {$packrecords c}
 Unit mpfr;
@@ -114,6 +123,14 @@ procedure mpfr_clear(rop: mpfr_ptr); cdecl; external LIBMPFR name 'mpfr_clear';
 procedure mpfr_inits2(rop: mpfr_prec_t; p1: mpfr_ptr{; ...}); cdecl; varargs; external LIBMPFR name 'mpfr_inits2';
 procedure mpfr_inits(rop: mpfr_ptr{; ...}); cdecl; varargs; external LIBMPFR name 'mpfr_inits';
 procedure mpfr_clears(rop: mpfr_ptr{; ...}); cdecl; varargs; external LIBMPFR name 'mpfr_clears';
+procedure mpfr_init_set_si(x: mpfr_ptr; y: valsint; rnd: mpfr_rnd_t);
+procedure mpfr_init_set_ui(x: mpfr_ptr; y: valuint; rnd: mpfr_rnd_t);
+procedure mpfr_init_set_d(x: mpfr_ptr; y: double; rnd: mpfr_rnd_t);
+procedure mpfr_init_set_ld(x: mpfr_ptr; y: extended; rnd: mpfr_rnd_t);
+procedure mpfr_init_set_z(x: mpfr_ptr; y: mpz_ptr; rnd: mpfr_rnd_t);
+procedure mpfr_init_set_q(x: mpfr_ptr; y: mpq_ptr; rnd: mpfr_rnd_t);
+procedure mpfr_init_set_f(x: mpfr_ptr; y: mpf_ptr; rnd: mpfr_rnd_t);
+
 function mpfr_prec_round(rop: mpfr_ptr; p1: mpfr_prec_t; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_prec_round';
 function mpfr_can_round(const rop: mpfr_ptr; p1: mpfr_exp_t; p2: mpfr_rnd_t; p3: mpfr_rnd_t; p4: mpfr_prec_t): integer; cdecl; external LIBMPFR name 'mpfr_can_round';
 function mpfr_min_prec(const rop: mpfr_ptr): mpfr_prec_t; cdecl; external LIBMPFR name 'mpfr_min_prec';
@@ -233,6 +250,7 @@ function mpfr_cmp3(const rop: mpfr_ptr; const p1: mpfr_ptr; p2: integer): intege
 function mpfr_cmp_d(const rop: mpfr_ptr; p1: double): integer; cdecl; external LIBMPFR name 'mpfr_cmp_d';
 function mpfr_cmp_ld(const rop: mpfr_ptr; p1: extended): integer; cdecl; external LIBMPFR name 'mpfr_cmp_ld';
 function mpfr_cmpabs(const rop: mpfr_ptr; const p1: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_cmpabs';
+function mpfr_cmp_abs(op1: mpfr_ptr; op2: mpfr_ptr): integer;
 function mpfr_cmp_ui(const rop: mpfr_ptr; p1: valsint): integer; cdecl; external LIBMPFR name 'mpfr_cmp_ui';
 function mpfr_cmp_si(const rop: mpfr_ptr; p1: int64): integer; cdecl; external LIBMPFR name 'mpfr_cmp_si';
 function mpfr_cmp_ui_2exp(const rop: mpfr_ptr; p1: valsint; p2: mpfr_exp_t): integer; cdecl; external LIBMPFR name 'mpfr_cmp_ui_2exp';
