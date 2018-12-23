@@ -21,10 +21,22 @@ Const
   MPFR_PREC_MIN   = 1;
   MPFR_PREC_MAX   = High(valsint);
 
-  __MPFR_EXP_MAX  = -1;
-  __MPFR_EXP_ZERO = 1;  
-  __MPFR_EXP_NAN  = 2;
-  __MPFR_EXP_INF  = 3;
+  __MPFR_EXP_MAX  = valsint(valuint(-1) shr 1);
+  __MPFR_EXP_NAN  = 1 - __MPFR_EXP_MAX;
+  __MPFR_EXP_ZERO = 0 - __MPFR_EXP_MAX;
+  __MPFR_EXP_INF  = 2 - __MPFR_EXP_MAX;
+
+  MPFR_FLAGS_UNDERFLOW = 1;
+  MPFR_FLAGS_OVERFLOW  = 2;
+  MPFR_FLAGS_NAN       = 4;
+  MPFR_FLAGS_INEXACT   = 8;
+  MPFR_FLAGS_ERANGE    = 16;
+  MPFR_FLAGS_DIVBY0    = 32;
+  MPFR_FLAGS_ALL       = MPFR_FLAGS_UNDERFLOW or MPFR_FLAGS_OVERFLOW or MPFR_FLAGS_NAN or MPFR_FLAGS_INEXACT or MPFR_FLAGS_ERANGE or MPFR_FLAGS_DIVBY0;
+
+  MPFR_EMAX_DEFAULT = valsint((longword(1) shl 30) - 1);
+  MPFR_EMIN_DEFAULT = -MPFR_EMAX_DEFAULT;
+
 
 Type
 // Stack interface
