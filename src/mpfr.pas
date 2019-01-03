@@ -71,15 +71,16 @@ Type
   mpfr_sign_t     = integer;
   mpfr_flags_t    = longword;
   mpfr_exp_ptr    = ^mpfr_exp_t;
-  Pint64	  = ^int64;
+  Pint64	      = ^int64;
 
   // Структура длинного числа MPFR
-  mpfr_t = record
+  __mpfr_struct = record
     _mpfr_prec : mpfr_prec_t; // Мантисса
     _mpfr_sign : mpfr_sign_t; // Знак числа
     _mpfr_exp  : mpfr_exp_t;  // Экспонента
     _mpfr_d    : ^mp_limb_t;  // Указатель на хранилище
   end;
+  mpfr_t      = __mpfr_struct;
   mpfr_ptr    = ^mpfr_t;
   mpfr_srcptr = ^mpfr_t;
 
