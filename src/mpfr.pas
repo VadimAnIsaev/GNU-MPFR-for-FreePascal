@@ -71,7 +71,7 @@ Type
   mpfr_sign_t     = integer;
   mpfr_flags_t    = longword;
   mpfr_exp_ptr    = ^mpfr_exp_t;
-  Pint64	      = ^int64;
+  Pint64	  = ^int64;
 
   // Структура длинного числа MPFR
   __mpfr_struct = record
@@ -88,12 +88,14 @@ Type
 
 function mpfr_get_version(): PChar; cdecl; external LIBMPFR name 'mpfr_get_version';
 function mpfr_get_patches(): PChar; cdecl; external LIBMPFR name 'mpfr_get_patches';
+
 function mpfr_buildopt_tls_p(): integer; cdecl; external LIBMPFR name 'mpfr_buildopt_tls_p';
 function mpfr_buildopt_float128_p(): integer; cdecl; external LIBMPFR name 'mpfr_buildopt_float128_p';
 function mpfr_buildopt_decimal_p(): integer; cdecl; external LIBMPFR name 'mpfr_buildopt_decimal_p';
 function mpfr_buildopt_gmpinternals_p(): integer; cdecl; external LIBMPFR name 'mpfr_buildopt_gmpinternals_p';
 function mpfr_buildopt_sharedcache_p(): integer; cdecl; external LIBMPFR name 'mpfr_buildopt_sharedcache_p';
 function mpfr_buildopt_tune_case(): PChar; cdecl; external LIBMPFR name 'mpfr_buildopt_tune_case';
+
 function mpfr_get_emin(): mpfr_exp_t; cdecl; external LIBMPFR name 'mpfr_get_emin';
 function mpfr_set_emin(rop: mpfr_exp_t): integer; cdecl; external LIBMPFR name 'mpfr_set_emin';
 function mpfr_get_emin_min(): mpfr_exp_t; cdecl; external LIBMPFR name 'mpfr_get_emin_min';
@@ -105,6 +107,7 @@ function mpfr_get_emax_max(): mpfr_exp_t; cdecl; external LIBMPFR name 'mpfr_get
 procedure mpfr_set_default_rounding_mode(rop: mpfr_rnd_t); cdecl; external LIBMPFR name 'mpfr_set_default_rounding_mode';
 function mpfr_get_default_rounding_mode(): mpfr_rnd_t; cdecl; external LIBMPFR name 'mpfr_get_default_rounding_mode';
 function mpfr_print_rnd_mode(rop: mpfr_rnd_t): PChar; cdecl; external LIBMPFR name 'mpfr_print_rnd_mode';
+
 procedure mpfr_clear_flags(); cdecl; external LIBMPFR name 'mpfr_clear_flags';
 procedure mpfr_clear_underflow(); cdecl; external LIBMPFR name 'mpfr_clear_underflow';
 procedure mpfr_clear_overflow(); cdecl; external LIBMPFR name 'mpfr_clear_overflow';
@@ -129,20 +132,6 @@ procedure mpfr_flags_set(rop: mpfr_flags_t); cdecl; external LIBMPFR name 'mpfr_
 function mpfr_flags_test(rop: mpfr_flags_t): mpfr_flags_t; cdecl; external LIBMPFR name 'mpfr_flags_test';
 function mpfr_flags_save(): mpfr_flags_t; cdecl; external LIBMPFR name 'mpfr_flags_save';
 procedure mpfr_flags_restore(rop: mpfr_flags_t; p1: mpfr_flags_t); cdecl; external LIBMPFR name 'mpfr_flags_restore';
-function mpfr_check_range(rop: mpfr_ptr; p1: integer; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_check_range';
-procedure mpfr_init2(rop: mpfr_ptr; p1: mpfr_prec_t); cdecl; external LIBMPFR name 'mpfr_init2';
-procedure mpfr_init(rop: mpfr_ptr); cdecl; external LIBMPFR name 'mpfr_init';
-procedure mpfr_clear(rop: mpfr_ptr); cdecl; external LIBMPFR name 'mpfr_clear';
-procedure mpfr_inits2(rop: mpfr_prec_t; p1: mpfr_ptr{; ...}); cdecl; varargs; external LIBMPFR name 'mpfr_inits2';
-procedure mpfr_inits(rop: mpfr_ptr{; ...}); cdecl; varargs; external LIBMPFR name 'mpfr_inits';
-procedure mpfr_clears(rop: mpfr_ptr{; ...}); cdecl; varargs; external LIBMPFR name 'mpfr_clears';
-procedure mpfr_init_set_si(x: mpfr_ptr; y: valsint; rnd: mpfr_rnd_t);
-procedure mpfr_init_set_ui(x: mpfr_ptr; y: valuint; rnd: mpfr_rnd_t);
-procedure mpfr_init_set_d(x: mpfr_ptr; y: double; rnd: mpfr_rnd_t);
-procedure mpfr_init_set_ld(x: mpfr_ptr; y: extended; rnd: mpfr_rnd_t);
-procedure mpfr_init_set_z(x: mpfr_ptr; y: mpz_ptr; rnd: mpfr_rnd_t);
-procedure mpfr_init_set_q(x: mpfr_ptr; y: mpq_ptr; rnd: mpfr_rnd_t);
-procedure mpfr_init_set_f(x: mpfr_ptr; y: mpf_ptr; rnd: mpfr_rnd_t);
 
 function mpfr_prec_round(rop: mpfr_ptr; p1: mpfr_prec_t; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_prec_round';
 function mpfr_can_round(const rop: mpfr_ptr; p1: mpfr_exp_t; p2: mpfr_rnd_t; p3: mpfr_rnd_t; p4: mpfr_prec_t): integer; cdecl; external LIBMPFR name 'mpfr_can_round';
@@ -154,37 +143,43 @@ procedure mpfr_set_prec(rop: mpfr_ptr; p1: mpfr_prec_t); cdecl; external LIBMPFR
 procedure mpfr_set_prec_raw(rop: mpfr_ptr; p1: mpfr_prec_t); cdecl; external LIBMPFR name 'mpfr_set_prec_raw';
 procedure mpfr_set_default_prec(rop: mpfr_prec_t); cdecl; external LIBMPFR name 'mpfr_set_default_prec';
 function mpfr_get_default_prec(): mpfr_prec_t; cdecl; external LIBMPFR name 'mpfr_get_default_prec';
+
+function mpfr_check_range(rop: mpfr_ptr; p1: integer; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_check_range';
+
+procedure mpfr_init(rop: mpfr_ptr); cdecl; external LIBMPFR name 'mpfr_init';
+procedure mpfr_init2(rop: mpfr_ptr; p1: mpfr_prec_t); cdecl; external LIBMPFR name 'mpfr_init2';
+procedure mpfr_inits(rop: mpfr_ptr{; ...}); cdecl; varargs; external LIBMPFR name 'mpfr_inits';
+procedure mpfr_inits2(rop: mpfr_prec_t; p1: mpfr_ptr{; ...}); cdecl; varargs; external LIBMPFR name 'mpfr_inits2';
+procedure mpfr_clear(rop: mpfr_ptr); cdecl; external LIBMPFR name 'mpfr_clear';
+procedure mpfr_clears(rop: mpfr_ptr{; ...}); cdecl; varargs; external LIBMPFR name 'mpfr_clears';
+
+function mpfr_init_set_str(rop: mpfr_ptr; p1: PChar; p2: integer; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_init_set_str';
+procedure mpfr_init_set_si(x: mpfr_ptr; y: valsint; rnd: mpfr_rnd_t);
+procedure mpfr_init_set_ui(x: mpfr_ptr; y: valuint; rnd: mpfr_rnd_t);
+procedure mpfr_init_set_d(x: mpfr_ptr; y: double; rnd: mpfr_rnd_t);
+procedure mpfr_init_set_ld(x: mpfr_ptr; y: extended; rnd: mpfr_rnd_t);
+procedure mpfr_init_set_z(x: mpfr_ptr; y: mpz_ptr; rnd: mpfr_rnd_t);
+procedure mpfr_init_set_q(x: mpfr_ptr; y: mpq_ptr; rnd: mpfr_rnd_t);
+procedure mpfr_init_set_f(x: mpfr_ptr; y: mpf_ptr; rnd: mpfr_rnd_t);
+
+function mpfr_set(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_set';
+function mpfr_set4(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t; p3: integer): integer; cdecl; external LIBMPFR name 'mpfr_set4';
+function mpfr_set_str(rop: mpfr_ptr; p1: PChar; p2: integer; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_set_str';
 function mpfr_set_d(rop: mpfr_ptr; p1: double; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_set_d';
 function mpfr_set_flt(rop: mpfr_ptr; p1: single; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_set_flt';
 function mpfr_set_ld(rop: mpfr_ptr; p1: extended; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_set_ld';
-function mpfr_set_z(rop: mpfr_ptr; const p1: mpz_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_set_z';
-function mpfr_set_z_2exp(rop: mpfr_ptr; const p1: mpz_ptr; p2: mpfr_exp_t; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_set_z_2exp';
-procedure mpfr_set_nan(rop: mpfr_ptr); cdecl; external LIBMPFR name 'mpfr_set_nan';
-procedure mpfr_set_inf(rop: mpfr_ptr; p1: integer); cdecl; external LIBMPFR name 'mpfr_set_inf';
-procedure mpfr_set_zero(rop: mpfr_ptr; p1: integer); cdecl; external LIBMPFR name 'mpfr_set_zero';
-function mpfr_set_f(rop: mpfr_ptr; const p1: mpf_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_set_f';
-function mpfr_cmp_f(const rop: mpfr_ptr; const p1: mpf_ptr): integer; cdecl; external LIBMPFR name 'mpfr_cmp_f';
-function mpfr_get_f(rop: mpf_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_get_f';
 function mpfr_set_si(rop: mpfr_ptr; p1: int64; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_set_si';
 function mpfr_set_ui(rop: mpfr_ptr; p1: valsint; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_set_ui';
 function mpfr_set_si_2exp(rop: mpfr_ptr; p1: int64; p2: mpfr_exp_t; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_set_si_2exp';
 function mpfr_set_ui_2exp(rop: mpfr_ptr; p1: valsint; p2: mpfr_exp_t; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_set_ui_2exp';
+function mpfr_set_z_2exp(rop: mpfr_ptr; const p1: mpz_ptr; p2: mpfr_exp_t; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_set_z_2exp';
+function mpfr_set_z(rop: mpfr_ptr; const p1: mpz_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_set_z';
 function mpfr_set_q(rop: mpfr_ptr; const p1: mpq_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_set_q';
-function mpfr_mul_q(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpq_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_mul_q';
-function mpfr_div_q(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpq_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_div_q';
-function mpfr_add_q(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpq_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_add_q';
-function mpfr_sub_q(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpq_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_sub_q';
-function mpfr_cmp_q(const rop: mpfr_ptr; const p1: mpq_ptr): integer; cdecl; external LIBMPFR name 'mpfr_cmp_q';
+function mpfr_set_f(rop: mpfr_ptr; const p1: mpf_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_set_f';
+
+function mpfr_get_str(rop: PChar; p1: mpfr_exp_ptr; p2: integer; p3: valuint; const p4: mpfr_ptr; p5: mpfr_rnd_t): PChar; cdecl; external LIBMPFR name 'mpfr_get_str';
+function mpfr_get_f(rop: mpf_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_get_f';
 procedure mpfr_get_q(rop: mpq_ptr; const p1: mpfr_ptr); cdecl; external LIBMPFR name 'mpfr_get_q';
-function mpfr_set_str(rop: mpfr_ptr; p1: PChar; p2: integer; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_set_str';
-function mpfr_init_set_str(rop: mpfr_ptr; p1: PChar; p2: integer; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_init_set_str';
-function mpfr_set4(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t; p3: integer): integer; cdecl; external LIBMPFR name 'mpfr_set4';
-function mpfr_abs(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_abs';
-function mpfr_set(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_set';
-function mpfr_neg(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_neg';
-function mpfr_signbit(const rop: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_signbit';
-function mpfr_setsign(rop: mpfr_ptr; const p1: mpfr_ptr; p2: integer; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_setsign';
-function mpfr_copysign(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_copysign';
 function mpfr_get_z_2exp(rop: mpz_ptr; const p1: mpfr_ptr): mpfr_exp_t; cdecl; external LIBMPFR name 'mpfr_get_z_2exp';
 function mpfr_get_flt(const rop: mpfr_ptr; p1: mpfr_rnd_t): single; cdecl; external LIBMPFR name 'mpfr_get_flt';
 function mpfr_get_d(const rop: mpfr_ptr; p1: mpfr_rnd_t): double; cdecl; external LIBMPFR name 'mpfr_get_d';
@@ -192,60 +187,108 @@ function mpfr_get_ld(const rop: mpfr_ptr; p1: mpfr_rnd_t): extended; cdecl; exte
 function mpfr_get_d1(const rop: mpfr_ptr): double; cdecl; external LIBMPFR name 'mpfr_get_d1';
 function mpfr_get_d_2exp(rop: Pint64; const p1: mpfr_ptr; p2: mpfr_rnd_t): double; cdecl; external LIBMPFR name 'mpfr_get_d_2exp';
 function mpfr_get_ld_2exp(rop: Pint64; const p1: mpfr_ptr; p2: mpfr_rnd_t): extended; cdecl; external LIBMPFR name 'mpfr_get_ld_2exp';
-function mpfr_frexp(rop: mpfr_exp_ptr; p1: mpfr_ptr; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_frexp';
 function mpfr_get_si(const rop: mpfr_ptr; p1: mpfr_rnd_t): int64; cdecl; external LIBMPFR name 'mpfr_get_si';
 function mpfr_get_ui(const rop: mpfr_ptr; p1: mpfr_rnd_t): valsint; cdecl; external LIBMPFR name 'mpfr_get_ui';
-function mpfr_get_str(rop: PChar; p1: mpfr_exp_ptr; p2: integer; p3: valuint; const p4: mpfr_ptr; p5: mpfr_rnd_t): PChar; cdecl; external LIBMPFR name 'mpfr_get_str';
 function mpfr_get_z(rop: mpz_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_get_z';
+
+procedure mpfr_set_nan(rop: mpfr_ptr); cdecl; external LIBMPFR name 'mpfr_set_nan';
+procedure mpfr_set_inf(rop: mpfr_ptr; p1: integer); cdecl; external LIBMPFR name 'mpfr_set_inf';
+procedure mpfr_set_zero(rop: mpfr_ptr; p1: integer); cdecl; external LIBMPFR name 'mpfr_set_zero';
+
+function mpfr_setsign(rop: mpfr_ptr; const p1: mpfr_ptr; p2: integer; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_setsign';
+function mpfr_abs(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_abs';
+function mpfr_neg(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_neg';
+function mpfr_signbit(const rop: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_signbit';
+function mpfr_copysign(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_copysign';
+
+function mpfr_frexp(rop: mpfr_exp_ptr; p1: mpfr_ptr; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_frexp';
+
 procedure mpfr_free_str(rop: PChar); cdecl; external LIBMPFR name 'mpfr_free_str';
+
 function mpfr_urandom(rop: mpfr_ptr; p1: gmp_randstate_t; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_urandom';
 function mpfr_grandom(rop: mpfr_ptr; p1: mpfr_ptr; p2: gmp_randstate_t; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_grandom';
 function mpfr_nrandom(rop: mpfr_ptr; p1: gmp_randstate_t; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_nrandom';
 function mpfr_erandom(rop: mpfr_ptr; p1: gmp_randstate_t; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_erandom';
 function mpfr_urandomb(rop: mpfr_ptr; p1: gmp_randstate_t): integer; cdecl; external LIBMPFR name 'mpfr_urandomb';
+
 procedure mpfr_nextabove(rop: mpfr_ptr); cdecl; external LIBMPFR name 'mpfr_nextabove';
 procedure mpfr_nextbelow(rop: mpfr_ptr); cdecl; external LIBMPFR name 'mpfr_nextbelow';
 procedure mpfr_nexttoward(rop: mpfr_ptr; const p1: mpfr_ptr); cdecl; external LIBMPFR name 'mpfr_nexttoward';
+
 function mpfr_printf(rop: PChar{; ...}): integer; cdecl; varargs; external LIBMPFR name 'mpfr_printf';
 function mpfr_asprintf(rop: PChar; p1: PChar{; ...}): integer; cdecl; varargs; external LIBMPFR name 'mpfr_asprintf';
 function mpfr_sprintf(rop: PChar; p1: PChar{; ...}): integer; cdecl; varargs; external LIBMPFR name 'mpfr_sprintf';
 function mpfr_snprintf(rop: PChar; p1: valuint; p2: PChar{; ...}): integer; cdecl; varargs; external LIBMPFR name 'mpfr_snprintf';
+
 function mpfr_pow(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_pow';
 function mpfr_pow_si(rop: mpfr_ptr; const p1: mpfr_ptr; p2: int64; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_pow_si';
 function mpfr_pow_ui(rop: mpfr_ptr; const p1: mpfr_ptr; p2: valsint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_pow_ui';
 function mpfr_ui_pow_ui(rop: mpfr_ptr; p1: valsint; p2: valsint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_ui_pow_ui';
 function mpfr_ui_pow(rop: mpfr_ptr; p1: valsint; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_ui_pow';
 function mpfr_pow_z(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpz_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_pow_z';
+function mpfr_sqr(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_sqr';
 function mpfr_sqrt(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_sqrt';
 function mpfr_sqrt_ui(rop: mpfr_ptr; p1: valsint; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_sqrt_ui';
 function mpfr_rec_sqrt(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_rec_sqrt';
+
+// Арифметические операции
 function mpfr_add(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_add';
 function mpfr_sub(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_sub';
 function mpfr_mul(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_mul';
 function mpfr_div(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_div';
-function mpfr_add_ui(rop: mpfr_ptr; const p1: mpfr_ptr; p2: valsint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_add_ui';
-function mpfr_sub_ui(rop: mpfr_ptr; const p1: mpfr_ptr; p2: valsint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_sub_ui';
-function mpfr_ui_sub(rop: mpfr_ptr; p1: valsint; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_ui_sub';
-function mpfr_mul_ui(rop: mpfr_ptr; const p1: mpfr_ptr; p2: valsint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_mul_ui';
-function mpfr_div_ui(rop: mpfr_ptr; const p1: mpfr_ptr; p2: valsint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_div_ui';
-function mpfr_ui_div(rop: mpfr_ptr; p1: valsint; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_ui_div';
-function mpfr_add_si(rop: mpfr_ptr; const p1: mpfr_ptr; p2: int64; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_add_si';
-function mpfr_sub_si(rop: mpfr_ptr; const p1: mpfr_ptr; p2: int64; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_sub_si';
-function mpfr_si_sub(rop: mpfr_ptr; p1: int64; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_si_sub';
-function mpfr_mul_si(rop: mpfr_ptr; const p1: mpfr_ptr; p2: int64; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_mul_si';
-function mpfr_div_si(rop: mpfr_ptr; const p1: mpfr_ptr; p2: int64; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_div_si';
-function mpfr_si_div(rop: mpfr_ptr; p1: int64; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_si_div';
+
+
+function mpfr_add_ui(rop: mpfr_ptr; const p1: mpfr_ptr; p2: valuint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_add_ui';
+function mpfr_sub_ui(rop: mpfr_ptr; const p1: mpfr_ptr; p2: valuint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_sub_ui';
+function mpfr_ui_sub(rop: mpfr_ptr; p1: valuint; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_ui_sub';
+function mpfr_mul_ui(rop: mpfr_ptr; const p1: mpfr_ptr; p2: valuint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_mul_ui';
+function mpfr_div_ui(rop: mpfr_ptr; const p1: mpfr_ptr; p2: valuint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_div_ui';
+function mpfr_ui_div(rop: mpfr_ptr; p1: valuint; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_ui_div';
+
+function mpfr_add_si(rop: mpfr_ptr; const p1: mpfr_ptr; p2: valsint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_add_si';
+function mpfr_sub_si(rop: mpfr_ptr; const p1: mpfr_ptr; p2: valsint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_sub_si';
+function mpfr_si_sub(rop: mpfr_ptr; p1: valsint; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_si_sub';
+function mpfr_mul_si(rop: mpfr_ptr; const p1: mpfr_ptr; p2: valsint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_mul_si';
+function mpfr_div_si(rop: mpfr_ptr; const p1: mpfr_ptr; p2: valsint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_div_si';
+function mpfr_si_div(rop: mpfr_ptr; p1: valsint; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_si_div';
+
 function mpfr_add_d(rop: mpfr_ptr; const p1: mpfr_ptr; p2: double; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_add_d';
 function mpfr_sub_d(rop: mpfr_ptr; const p1: mpfr_ptr; p2: double; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_sub_d';
 function mpfr_d_sub(rop: mpfr_ptr; p1: double; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_d_sub';
 function mpfr_mul_d(rop: mpfr_ptr; const p1: mpfr_ptr; p2: double; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_mul_d';
 function mpfr_div_d(rop: mpfr_ptr; const p1: mpfr_ptr; p2: double; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_div_d';
 function mpfr_d_div(rop: mpfr_ptr; p1: double; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_d_div';
-function mpfr_sqr(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_sqr';
+
+function mpfr_mul_z(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpz_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_mul_z';
+function mpfr_div_z(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpz_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_div_z';
+function mpfr_add_z(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpz_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_add_z';
+function mpfr_sub_z(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpz_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_sub_z';
+function mpfr_z_sub(rop: mpfr_ptr; const p1: mpz_ptr; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_z_sub';
+
+function mpfr_mul_q(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpq_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_mul_q';
+function mpfr_div_q(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpq_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_div_q';
+function mpfr_add_q(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpq_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_add_q';
+function mpfr_sub_q(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpq_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_sub_q';
+
+procedure mpfr_reldiff(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpfr_ptr; p3: mpfr_rnd_t); cdecl; external LIBMPFR name 'mpfr_reldiff';
+function mpfr_mul_2exp(rop: mpfr_ptr; const p1: mpfr_ptr; p2: valsint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_mul_2exp';
+function mpfr_div_2exp(rop: mpfr_ptr; const p1: mpfr_ptr; p2: valsint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_div_2exp';
+function mpfr_mul_2ui(rop: mpfr_ptr; const p1: mpfr_ptr; p2: valuint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_mul_2ui';
+function mpfr_div_2ui(rop: mpfr_ptr; const p1: mpfr_ptr; p2: valuint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_div_2ui';
+function mpfr_mul_2si(rop: mpfr_ptr; const p1: mpfr_ptr; p2: valsint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_mul_2si';
+function mpfr_div_2si(rop: mpfr_ptr; const p1: mpfr_ptr; p2: valsint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_div_2si';
+
+function mpfr_min(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_min';
+function mpfr_max(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_max';
+function mpfr_dim(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_dim';
+function mpfr_sum(rop: mpfr_ptr; p1: mpfr_ptr; p2: valsint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_sum';
+
+// Вычисление констант
 function mpfr_const_pi(rop: mpfr_ptr; p1: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_const_pi';
 function mpfr_const_log2(rop: mpfr_ptr; p1: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_const_log2';
 function mpfr_const_euler(rop: mpfr_ptr; p1: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_const_euler';
 function mpfr_const_catalan(rop: mpfr_ptr; p1: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_const_catalan';
+
 function mpfr_agm(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_agm';
 function mpfr_log(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_log';
 function mpfr_log2(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_log2';
@@ -258,6 +301,8 @@ function mpfr_exp10(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer;
 function mpfr_expm1(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_expm1';
 function mpfr_eint(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_eint';
 function mpfr_li2(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_li2';
+
+// Сравнение
 function mpfr_cmp(const rop: mpfr_ptr; const p1: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_cmp';
 function mpfr_cmp3(const rop: mpfr_ptr; const p1: mpfr_ptr; p2: integer): integer; cdecl; external LIBMPFR name 'mpfr_cmp3';
 function mpfr_cmp_d(const rop: mpfr_ptr; p1: double): integer; cdecl; external LIBMPFR name 'mpfr_cmp_d';
@@ -268,15 +313,28 @@ function mpfr_cmp_ui(const rop: mpfr_ptr; p1: valsint): integer; cdecl; external
 function mpfr_cmp_si(const rop: mpfr_ptr; p1: int64): integer; cdecl; external LIBMPFR name 'mpfr_cmp_si';
 function mpfr_cmp_ui_2exp(const rop: mpfr_ptr; p1: valsint; p2: mpfr_exp_t): integer; cdecl; external LIBMPFR name 'mpfr_cmp_ui_2exp';
 function mpfr_cmp_si_2exp(const rop: mpfr_ptr; p1: int64; p2: mpfr_exp_t): integer; cdecl; external LIBMPFR name 'mpfr_cmp_si_2exp';
-procedure mpfr_reldiff(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpfr_ptr; p3: mpfr_rnd_t); cdecl; external LIBMPFR name 'mpfr_reldiff';
+function mpfr_cmp_f(const rop: mpfr_ptr; const p1: mpf_ptr): integer; cdecl; external LIBMPFR name 'mpfr_cmp_f';
+function mpfr_cmp_q(const rop: mpfr_ptr; const p1: mpq_ptr): integer; cdecl; external LIBMPFR name 'mpfr_cmp_q';
+function mpfr_cmp_z(const rop: mpfr_ptr; const p1: mpz_ptr): integer; cdecl; external LIBMPFR name 'mpfr_cmp_z';
+
 function mpfr_eq(const rop: mpfr_ptr; const p1: mpfr_ptr; p2: valsint): integer; cdecl; external LIBMPFR name 'mpfr_eq';
+function mpfr_nan_p(const rop: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_nan_p';
+function mpfr_inf_p(const rop: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_inf_p';
+function mpfr_number_p(const rop: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_number_p';
+function mpfr_integer_p(const rop: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_integer_p';
+function mpfr_zero_p(const rop: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_zero_p';	
+function mpfr_regular_p(const rop: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_regular_p';
+function mpfr_greater_p(const rop: mpfr_ptr; const p1: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_greater_p';
+function mpfr_greaterequal_p(const rop: mpfr_ptr; const p1: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_greaterequal_p';
+function mpfr_less_p(const rop: mpfr_ptr; const p1: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_less_p';
+function mpfr_lessequal_p(const rop: mpfr_ptr; const p1: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_lessequal_p';
+function mpfr_lessgreater_p(const rop: mpfr_ptr; const p1: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_lessgreater_p';
+function mpfr_equal_p(const rop: mpfr_ptr; const p1: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_equal_p';
+function mpfr_unordered_p(const rop: mpfr_ptr; const p1: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_unordered_p';
+
 function mpfr_sgn(const rop: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_sgn';
-function mpfr_mul_2exp(rop: mpfr_ptr; const p1: mpfr_ptr; p2: valsint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_mul_2exp';
-function mpfr_div_2exp(rop: mpfr_ptr; const p1: mpfr_ptr; p2: valsint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_div_2exp';
-function mpfr_mul_2ui(rop: mpfr_ptr; const p1: mpfr_ptr; p2: valsint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_mul_2ui';
-function mpfr_div_2ui(rop: mpfr_ptr; const p1: mpfr_ptr; p2: valsint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_div_2ui';
-function mpfr_mul_2si(rop: mpfr_ptr; const p1: mpfr_ptr; p2: int64; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_mul_2si';
-function mpfr_div_2si(rop: mpfr_ptr; const p1: mpfr_ptr; p2: int64; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_div_2si';
+
+// Округление
 function mpfr_rint(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_rint';
 function mpfr_roundeven(rop: mpfr_ptr; const p1: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_roundeven';
 function mpfr_round(rop: mpfr_ptr; const p1: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_round';
@@ -294,6 +352,8 @@ function mpfr_remquo(rop: mpfr_ptr; p1: Pint64; const p2: mpfr_ptr; const p3: mp
 function mpfr_remainder(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_remainder';
 function mpfr_fmod(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_fmod';
 function mpfr_fmodquo(rop: mpfr_ptr; p1: Pint64; const p2: mpfr_ptr; const p3: mpfr_ptr; p4: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_fmodquo';
+
+// Тест на вместимость
 function mpfr_fits_ulong_p(const rop: mpfr_ptr; p1: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_fits_ulong_p';
 function mpfr_fits_slong_p(const rop: mpfr_ptr; p1: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_fits_slong_p';
 function mpfr_fits_uint_p(const rop: mpfr_ptr; p1: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_fits_uint_p';
@@ -302,22 +362,13 @@ function mpfr_fits_ushort_p(const rop: mpfr_ptr; p1: mpfr_rnd_t): integer; cdecl
 function mpfr_fits_sshort_p(const rop: mpfr_ptr; p1: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_fits_sshort_p';
 function mpfr_fits_uintmax_p(const rop: mpfr_ptr; p1: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_fits_uintmax_p';
 function mpfr_fits_intmax_p(const rop: mpfr_ptr; p1: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_fits_intmax_p';
+
 procedure mpfr_extract(rop: mpz_ptr; const p1: mpfr_ptr; p2: integer); cdecl; external LIBMPFR name 'mpfr_extract';
 procedure mpfr_swap(rop: mpfr_ptr; p1: mpfr_ptr); cdecl; external LIBMPFR name 'mpfr_swap';
 procedure mpfr_dump(const rop: mpfr_ptr); cdecl; external LIBMPFR name 'mpfr_dump';
-function mpfr_nan_p(const rop: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_nan_p';
-function mpfr_inf_p(const rop: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_inf_p';
-function mpfr_number_p(const rop: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_number_p';
-function mpfr_integer_p(const rop: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_integer_p';
-function mpfr_zero_p(const rop: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_zero_p';
-function mpfr_regular_p(const rop: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_regular_p';
-function mpfr_greater_p(const rop: mpfr_ptr; const p1: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_greater_p';
-function mpfr_greaterequal_p(const rop: mpfr_ptr; const p1: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_greaterequal_p';
-function mpfr_less_p(const rop: mpfr_ptr; const p1: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_less_p';
-function mpfr_lessequal_p(const rop: mpfr_ptr; const p1: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_lessequal_p';
-function mpfr_lessgreater_p(const rop: mpfr_ptr; const p1: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_lessgreater_p';
-function mpfr_equal_p(const rop: mpfr_ptr; const p1: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_equal_p';
-function mpfr_unordered_p(const rop: mpfr_ptr; const p1: mpfr_ptr): integer; cdecl; external LIBMPFR name 'mpfr_unordered_p';
+
+
+// Тригонометрические функции
 function mpfr_atanh(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_atanh';
 function mpfr_acosh(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_acosh';
 function mpfr_asinh(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_asinh';
@@ -345,6 +396,8 @@ function mpfr_erfc(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; 
 function mpfr_cbrt(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_cbrt';
 function mpfr_root(rop: mpfr_ptr; const p1: mpfr_ptr; p2: valsint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_root';
 function mpfr_rootn_ui(rop: mpfr_ptr; const p1: mpfr_ptr; p2: valsint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_rootn_ui';
+
+// Специальные функции
 function mpfr_gamma(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_gamma';
 function mpfr_gamma_inc(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_gamma_inc';
 function mpfr_beta(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_beta';
@@ -361,20 +414,15 @@ function mpfr_y0(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cd
 function mpfr_y1(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_y1';
 function mpfr_yn(rop: mpfr_ptr; p1: int64; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_yn';
 function mpfr_ai(rop: mpfr_ptr; const p1: mpfr_ptr; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_ai';
-function mpfr_min(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_min';
-function mpfr_max(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_max';
-function mpfr_dim(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_dim';
-function mpfr_mul_z(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpz_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_mul_z';
-function mpfr_div_z(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpz_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_div_z';
-function mpfr_add_z(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpz_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_add_z';
-function mpfr_sub_z(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpz_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_sub_z';
-function mpfr_z_sub(rop: mpfr_ptr; const p1: mpz_ptr; const p2: mpfr_ptr; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_z_sub';
-function mpfr_cmp_z(const rop: mpfr_ptr; const p1: mpz_ptr): integer; cdecl; external LIBMPFR name 'mpfr_cmp_z';
+
+
+//
 function mpfr_fma(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpfr_ptr; const p3: mpfr_ptr; p4: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_fma';
 function mpfr_fms(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpfr_ptr; const p3: mpfr_ptr; p4: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_fms';
 function mpfr_fmma(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpfr_ptr; const p3: mpfr_ptr; const p4: mpfr_ptr; p5: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_fmma';
 function mpfr_fmms(rop: mpfr_ptr; const p1: mpfr_ptr; const p2: mpfr_ptr; const p3: mpfr_ptr; const p4: mpfr_ptr; p5: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_fmms';
-function mpfr_sum(rop: mpfr_ptr; p1: mpfr_ptr; p2: valsint; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_sum';
+
+//
 procedure mpfr_free_cache(); cdecl; external LIBMPFR name 'mpfr_free_cache';
 procedure mpfr_free_cache2(rop: mpfr_free_cache_t); cdecl; external LIBMPFR name 'mpfr_free_cache2';
 procedure mpfr_free_pool(); cdecl; external LIBMPFR name 'mpfr_free_pool';
@@ -383,6 +431,8 @@ function mpfr_subnormalize(rop: mpfr_ptr; p1: integer; p2: mpfr_rnd_t): integer;
 function mpfr_strtofr(rop: mpfr_ptr; p1: PChar; p2: PChar; p3: integer; p4: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_strtofr';
 procedure mpfr_round_nearest_away_begin(rop: mpfr_ptr); cdecl; external LIBMPFR name 'mpfr_round_nearest_away_begin';
 function mpfr_round_nearest_away_end(rop: mpfr_ptr; p1: integer): integer; cdecl; external LIBMPFR name 'mpfr_round_nearest_away_end';
+
+//
 function mpfr_custom_get_size(rop: mpfr_prec_t): valuint; cdecl; external LIBMPFR name 'mpfr_custom_get_size';
 procedure mpfr_custom_init(rop: pointer; p1: mpfr_prec_t); cdecl; external LIBMPFR name 'mpfr_custom_init';
 function mpfr_custom_get_significand(const rop: mpfr_ptr): pointer; cdecl; external LIBMPFR name 'mpfr_custom_get_significand';
