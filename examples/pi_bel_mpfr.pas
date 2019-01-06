@@ -28,10 +28,10 @@ Begin
   mpfr_init_set_str(@tmp7, '7.0', 10, MPFR_RNDD);
   mpfr_init_set_str(@tmp9, '9.0', 10, MPFR_RNDD);
   
-  mpfr_inits(@m1, @m2, @m3, @m4, @m5, @m6, @m7, @m8);
-  mpfr_inits(@t1, @t2);
+  mpfr_inits(@m1, @m2, @m3, @m4, @m5, @m6, @m7, @m8, mpfr_ptr(0));
+  mpfr_inits(@t1, @t2, mpfr_ptr(0));
   
-  For k:=0 To 2000000 Do
+  For k:=0 To 20000000 Do
   Begin
     mpfr_pow_ui(@t1, @tmp_1, k, MPFR_RNDD);
     mpfr_pow_ui(@t2, @tmp2, (10*k), MPFR_RNDD);
@@ -58,7 +58,7 @@ Begin
     mpfr_div(@m6, @t1, @t2, MPFR_RNDD);
     
     mpfr_pow_ui(@t1, @tmp2, 2, MPFR_RNDD);
-    mpfr_add_ui(@t2, @tmp7, 10*k, MPFR_RNDD);
+    mpfr_add_ui(@t2, @tmp7, (10*k), MPFR_RNDD);
     mpfr_div(@m7, @t1, @t2, MPFR_RNDD);
     
     mpfr_add_ui(@t2, @tmp9, 10*k, MPFR_RNDD);
@@ -85,7 +85,7 @@ Begin
 
   mpfr_clear(@pi_bellard);
   
-  mpfr_clears(@tmp_1, @tmp1, @tmp2,@tmp3,@tmp5, @tmp7, @tmp9);
-  mpfr_clears(@m1, @m2, @m3, @m4, @m5, @m6, @m7, @m8);
-  mpfr_clears(@t1, @t2);
+  mpfr_clears(@tmp_1, @tmp1, @tmp2, @tmp3, @tmp5, @tmp7, @tmp9, mpfr_ptr(0));
+  mpfr_clears(@m1, @m2, @m3, @m4, @m5, @m6, @m7, @m8, mpfr_ptr(0));
+  mpfr_clears(@t1, @t2, mpfr_ptr(0));
 end.
