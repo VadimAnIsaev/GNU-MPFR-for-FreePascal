@@ -144,9 +144,9 @@ procedure mpfr_init_set_si(var x: mpfr_t; y: valsint; rnd: mpfr_rnd_t);
 procedure mpfr_init_set_ui(var x: mpfr_t; y: valuint; rnd: mpfr_rnd_t);
 procedure mpfr_init_set_d(var x: mpfr_t; y: double; rnd: mpfr_rnd_t);
 procedure mpfr_init_set_ld(var x: mpfr_t; y: extended; rnd: mpfr_rnd_t);
-procedure mpfr_init_set_z(var x: mpfr_t; var y: mpz_t; rnd: mpfr_rnd_t);
-procedure mpfr_init_set_q(var x: mpfr_t; var y: mpq_t; rnd: mpfr_rnd_t);
-procedure mpfr_init_set_f(var x: mpfr_t; var y: mpf_t; rnd: mpfr_rnd_t);
+procedure mpfr_init_set_z(var x: mpfr_t; y: mpz_t; rnd: mpfr_rnd_t);
+procedure mpfr_init_set_q(var x: mpfr_t; y: mpq_t; rnd: mpfr_rnd_t);
+procedure mpfr_init_set_f(var x: mpfr_t; y: mpf_t; rnd: mpfr_rnd_t);
 
 function mpfr_prec_round(var rop: mpfr_t; p1: mpfr_prec_t; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_prec_round';
 function mpfr_can_round(var rop: mpfr_t; p1: mpfr_exp_t; p2: mpfr_rnd_t; p3: mpfr_rnd_t; p4: mpfr_prec_t): integer; cdecl; external LIBMPFR name 'mpfr_can_round';
@@ -205,11 +205,11 @@ function mpfr_get_z_2exp(var rop: mpz_t; var op1: mpfr_t): mpfr_exp_t; cdecl; ex
 
 procedure mpfr_free_str(rop: PChar); cdecl; external LIBMPFR name 'mpfr_free_str';
 
-function mpfr_urandom(var rop: mpfr_t; p1: gmp_randstate_t; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_urandom';
-function mpfr_grandom(var rop: mpfr_t; var op1: mpfr_t; p2: gmp_randstate_t; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_grandom';
-function mpfr_nrandom(var rop: mpfr_t; p1: gmp_randstate_t; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_nrandom';
-function mpfr_erandom(var rop: mpfr_t; p1: gmp_randstate_t; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_erandom';
-function mpfr_urandomb(var rop: mpfr_t; p1: gmp_randstate_t): integer; cdecl; external LIBMPFR name 'mpfr_urandomb';
+function mpfr_urandom(var rop: mpfr_t; p1: randstate_t; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_urandom';
+function mpfr_grandom(var rop: mpfr_t; var op1: mpfr_t; p2: randstate_t; p3: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_grandom';
+function mpfr_nrandom(var rop: mpfr_t; p1: randstate_t; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_nrandom';
+function mpfr_erandom(var rop: mpfr_t; p1: randstate_t; p2: mpfr_rnd_t): integer; cdecl; external LIBMPFR name 'mpfr_erandom';
+function mpfr_urandomb(var rop: mpfr_t; p1: randstate_t): integer; cdecl; external LIBMPFR name 'mpfr_urandomb';
 
 procedure mpfr_nextabove(var rop: mpfr_t); cdecl; external LIBMPFR name 'mpfr_nextabove';
 procedure mpfr_nextbelow(var rop: mpfr_t); cdecl; external LIBMPFR name 'mpfr_nextbelow';
@@ -276,7 +276,7 @@ function mpfr_cmp3(var rop: mpfr_t; var op1: mpfr_t; p2: integer): integer; cdec
 function mpfr_cmp_d(var rop: mpfr_t; p1: double): integer; cdecl; external LIBMPFR name 'mpfr_cmp_d';
 function mpfr_cmp_ld(var rop: mpfr_t; p1: extended): integer; cdecl; external LIBMPFR name 'mpfr_cmp_ld';
 function mpfr_cmpabs(var rop: mpfr_t; var op1: mpfr_t): integer; cdecl; external LIBMPFR name 'mpfr_cmpabs';
-function mpfr_cmp_abs(ovar op1: mpfr_t; var op2: mpfr_t): integer;
+function mpfr_cmp_abs(op1: mpfr_t; op2: mpfr_t): integer;
 function mpfr_cmp_ui(var rop: mpfr_t; p1: valsint): integer; cdecl; external LIBMPFR name 'mpfr_cmp_ui';
 function mpfr_cmp_si(var rop: mpfr_t; p1: int64): integer; cdecl; external LIBMPFR name 'mpfr_cmp_si';
 function mpfr_cmp_ui_2exp(var rop: mpfr_t; p1: valsint; p2: mpfr_exp_t): integer; cdecl; external LIBMPFR name 'mpfr_cmp_ui_2exp';
